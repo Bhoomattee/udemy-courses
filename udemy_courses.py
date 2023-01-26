@@ -1,7 +1,14 @@
+"""
+getting a courses list in a single python list
+
+https://www.udemy.com/developers/affiliate/methods/get-courses-list/
+"""
 import requests as rq
 
 all_classes = list()
 page: int = 0
+# change this up to 10000 to get more
+
 page_end: int = 10
 udemy_url_endpoint: str = "https://www.udemy.com/api-2.0"
 udemy_url_classes: str = f"courses/?page={page}"
@@ -13,9 +20,9 @@ headers: dict = {
 
 while page < 10:
     classes_response = rq.get(f"{udemy_url_endpoint}/{udemy_url_classes}", headers=headers)
-    classes_list = classes_response.json()
-    if 'results' in classes_list[0]:
-        all_classes.append([x['results'] for x in classes_list])
+    classes_json = classes_response.json()
+    if 'results' in classes_json:
+        all_classes.extend(classes_json['results'])
     page += 1
     udemy_url_classes = f"courses/?page={page}"
     print(f"page: {page}")
